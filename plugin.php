@@ -17,11 +17,16 @@
  */
 
 // Pull in the autoloader
-require_once __DIR__.'/autoload.php';
+if (! class_exists(Cone\Plugin::class)) {
+    require_once __DIR__.'/autoload.php';
+}
 
 // Register the activation and the deactivation hooks
 register_activation_hook(__FILE__, [Cone\Plugin::class, 'activate']);
 register_deactivation_hook(__FILE__, [Cone\Plugin::class, 'deactivate']);
 
 // Boot the plugin
-Cone\Plugin::boot();
+add_action('plugins_loaded', [Cone\Plugin::class, 'boot'], 10, 0);
+
+// Load translations
+add_action('init', [Cone\Plugin::class, 'loadTextDomain'], 10, 0);
