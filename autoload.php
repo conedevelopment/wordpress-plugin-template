@@ -5,7 +5,7 @@
 // the file exists we include it automatically.
 spl_autoload_register(static function (string $class): void {
     if (strpos($class, $namespace = 'Cone\\') === 0) {
-        $file = __DIR__.sprintf('/src/%s.php', str_replace([$namespace, '\\'], ['', '/'], $class));
+        $file = sprintf('%s/src/%s.php', __DIR__, str_replace([$namespace, '\\'], ['', '/'], $class));
 
         if (is_file($file)) {
             require_once $file;
