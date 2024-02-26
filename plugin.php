@@ -26,7 +26,4 @@ register_activation_hook(__FILE__, [Cone\Plugin::class, 'activate']);
 register_deactivation_hook(__FILE__, [Cone\Plugin::class, 'deactivate']);
 
 // Boot the plugin
-add_action('plugins_loaded', [Cone\Plugin::class, 'boot'], 10, 0);
-
-// Load translations
-add_action('init', [Cone\Plugin::class, 'loadTextDomain'], 10, 0);
+add_action('plugins_loaded', [Cone\Plugin::class, 'boot']);

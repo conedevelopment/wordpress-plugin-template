@@ -16,7 +16,9 @@ abstract class Plugin
      */
     public static function boot(): void
     {
-        load_plugin_textdomain('plugin-slug', false, basename(dirname(__DIR__)).'/languages');
+        add_action('init', static function (): void {
+            load_plugin_textdomain('plugin-slug', false, basename(dirname(__DIR__)).'/languages');
+        });
     }
 
     /**
