@@ -1,0 +1,36 @@
+name: "Release asset"
+
+on:
+    release:
+        types:
+        - "published"
+
+permissions:
+    contents: "write"
+
+concurrency:
+    group: "${{ github.workflow }}-${{ github.ref }}"
+    cancel-in-progress: true
+
+jobs:
+    build_upload:
+        name: "Build and Upload"
+        runs-on: "ubuntu-latest"
+        env:
+            TAG_NAME: "${{ github.event.release.tag_name }}"
+        steps:
+        -
+            name: "Checkout repository"
+            uses: "actions/checkout@v4"
+            with:
+                fetch-depth: 0
+        -
+            name: "Build ZIP"
+            run: |
+                git archive --prefix=plugin-name/ --format=zip --output="${{ runner.temp }}/plugin-name.${TAG_NAME#v}.zip" "${TAG_NAME}"
+        -
+            name: "Upload asset"
+            env:
+                GH_TOKEN: "${{ github.token }}"
+            run: |
+                gh release upload "${TAG_NAME}" "${{ runner.temp }}/plugin-name.${TAG_NAME#v}.zip"
